@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2017 Zhihu Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,44 +13,45 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/album_item_height">
+    android:layout_height="@dimen/album_item_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-    <com.zhihu.matisse.internal.ui.widget.RoundedRectangleImageView
+    <ImageView
         android:id="@+id/album_cover"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp" />
-
-    <TextView
-        android:id="@+id/album_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/album_cover"
+        android:layout_width="@dimen/album_image_size"
+        android:layout_height="@dimen/album_image_size"
         android:layout_marginStart="8dp"
-        android:layout_toEndOf="@id/album_cover"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="?attr/album.dropdown.title.color"
-        android:textSize="16sp"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/album_cover" />
+        android:scaleType="centerCrop"
+        tools:src="@tools:sample/backgrounds/scenic" />
 
-    <TextView
-        android:id="@+id/album_media_count"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/album_name"
-        android:layout_below="@id/album_name"
-        android:layout_marginTop="4dp"
-        android:layout_toEndOf="@id/album_cover"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="?album.dropdown.count.color"
-        android:textSize="14sp"
-        android:layout_alignLeft="@id/album_name"
-        android:layout_toRightOf="@id/album_cover" />
-</RelativeLayout>
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/album_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="16sp"
+            tools:text="@tools:sample/cities" />
+
+        <TextView
+            android:id="@+id/album_media_count"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="123" />
+
+    </LinearLayout>
+</LinearLayout>

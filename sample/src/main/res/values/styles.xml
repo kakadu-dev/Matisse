@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2017 Zhihu Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,14 +18,6 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-    </style>
-
-    <style name="ZhihuOverlay" parent="ThemeOverlay.AppCompat">
-        <item name="colorButtonNormal">@color/zhihu_primary</item>
-    </style>
-
-    <style name="DraculaOverlay" parent="ThemeOverlay.AppCompat">
-        <item name="colorButtonNormal">@color/dracula_primary</item>
     </style>
 
 </resources>

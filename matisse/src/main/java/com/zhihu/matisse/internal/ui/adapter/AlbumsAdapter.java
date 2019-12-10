@@ -18,6 +18,8 @@ package com.zhihu.matisse.internal.ui.adapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,20 +38,10 @@ public class AlbumsAdapter extends CursorAdapter {
 
     public AlbumsAdapter(Context context, Cursor c, boolean autoRequery) {
         super(context, c, autoRequery);
-
-        TypedArray ta = context.getTheme().obtainStyledAttributes(
-                new int[]{R.attr.album_thumbnail_placeholder});
-        mPlaceholder = ta.getDrawable(0);
+        TypedArray ta = context.obtainStyledAttributes(new int[]{R.attr.matissePlaceholderColor});
+        int placeholderColor = ta.getColor(0, Color.MAGENTA);
         ta.recycle();
-    }
-
-    public AlbumsAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
-
-        TypedArray ta = context.getTheme().obtainStyledAttributes(
-                new int[]{R.attr.album_thumbnail_placeholder});
-        mPlaceholder = ta.getDrawable(0);
-        ta.recycle();
+        mPlaceholder = new ColorDrawable(placeholderColor);
     }
 
     @Override
@@ -65,7 +57,7 @@ public class AlbumsAdapter extends CursorAdapter {
 
         // do not need to load animated Gif
         SelectionSpec.getInstance().imageEngine.loadThumbnail(context, context.getResources().getDimensionPixelSize(R
-                        .dimen.media_grid_size), mPlaceholder,
+                        .dimen.album_image_size), mPlaceholder,
                 (ImageView) view.findViewById(R.id.album_cover), album.getCoverUri());
     }
 }

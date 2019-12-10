@@ -18,21 +18,22 @@ package com.zhihu.matisse.internal.ui.adapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.PorterDuff;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
+import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.ui.widget.MediaGrid;
@@ -55,11 +56,10 @@ public class AlbumMediaAdapter extends
         super(null);
         mSelectionSpec = SelectionSpec.getInstance();
         mSelectedCollection = selectedCollection;
-
-        TypedArray ta = context.getTheme().obtainStyledAttributes(new int[]{R.attr.item_placeholder});
-        mPlaceholder = ta.getDrawable(0);
+        TypedArray ta = context.obtainStyledAttributes(new int[]{R.attr.matissePlaceholderColor});
+        int placeholderColor = ta.getColor(0, Color.MAGENTA);
         ta.recycle();
-
+        mPlaceholder = new ColorDrawable(placeholderColor);
         mRecyclerView = recyclerView;
     }
 
@@ -88,27 +88,27 @@ public class AlbumMediaAdapter extends
     protected void onBindViewHolder(final RecyclerView.ViewHolder holder, Cursor cursor) {
         if (holder instanceof CaptureViewHolder) {
             CaptureViewHolder captureViewHolder = (CaptureViewHolder) holder;
-            Drawable[] drawables = captureViewHolder.mHint.getCompoundDrawables();
-            TypedArray ta = holder.itemView.getContext().getTheme().obtainStyledAttributes(
-                    new int[]{R.attr.capture_textColor});
-            int color = ta.getColor(0, 0);
-            ta.recycle();
+//            Drawable[] drawables = captureViewHolder.mHint.getCompoundDrawables();
+//            TypedArray ta = holder.itemView.getContext().getTheme().obtainStyledAttributes(
+//                    new int[]{R.attr.capture_textColor});
+//            int color = ta.getColor(0, 0);
+//            ta.recycle();
 
-            for (int i = 0; i < drawables.length; i++) {
-                Drawable drawable = drawables[i];
-                if (drawable != null) {
-                    final Drawable.ConstantState state = drawable.getConstantState();
-                    if (state == null) {
-                        continue;
-                    }
-
-                    Drawable newDrawable = state.newDrawable().mutate();
-                    newDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-                    newDrawable.setBounds(drawable.getBounds());
-                    drawables[i] = newDrawable;
-                }
-            }
-            captureViewHolder.mHint.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+//            for (int i = 0; i < drawables.length; i++) {
+//                Drawable drawable = drawables[i];
+//                if (drawable != null) {
+//                    final Drawable.ConstantState state = drawable.getConstantState();
+//                    if (state == null) {
+//                        continue;
+//                    }
+//
+//                    Drawable newDrawable = state.newDrawable().mutate();
+//                    newDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+//                    newDrawable.setBounds(drawable.getBounds());
+//                    drawables[i] = newDrawable;
+//                }
+//            }
+//            captureViewHolder.mHint.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
         } else if (holder instanceof MediaViewHolder) {
             MediaViewHolder mediaViewHolder = (MediaViewHolder) holder;
 
@@ -126,11 +126,13 @@ public class AlbumMediaAdapter extends
     }
 
     private void setCheckStatus(Item item, MediaGrid mediaGrid) {
+        mediaGrid.setActivated(false);
         if (mSelectionSpec.countable) {
             int checkedNum = mSelectedCollection.checkedNumOf(item);
             if (checkedNum > 0) {
                 mediaGrid.setCheckEnabled(true);
                 mediaGrid.setCheckedNum(checkedNum);
+                mediaGrid.setActivated(true);
             } else {
                 if (mSelectedCollection.maxSelectableReached()) {
                     mediaGrid.setCheckEnabled(false);
@@ -142,6 +144,7 @@ public class AlbumMediaAdapter extends
             }
         } else {
             boolean selected = mSelectedCollection.isSelected(item);
+            mediaGrid.setActivated(selected);
             if (selected) {
                 mediaGrid.setCheckEnabled(true);
                 mediaGrid.setChecked(true);
@@ -154,6 +157,9 @@ public class AlbumMediaAdapter extends
                     mediaGrid.setChecked(false);
                 }
             }
+        }
+        if (mSelectionSpec.maxSelectable == 1) {
+            mediaGrid.setCheckEnabled(true);
         }
     }
 
@@ -287,13 +293,8 @@ public class AlbumMediaAdapter extends
     }
 
     private static class CaptureViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView mHint;
-
         CaptureViewHolder(View itemView) {
             super(itemView);
-
-            mHint = (TextView) itemView.findViewById(R.id.hint);
         }
     }
 

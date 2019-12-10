@@ -27,10 +27,11 @@ import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import androidx.core.content.res.ResourcesCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.zhihu.matisse.R;
 
@@ -80,21 +81,14 @@ public class CheckView extends View {
     private void init(Context context) {
         mDensity = context.getResources().getDisplayMetrics().density;
 
-        mStrokePaint = new Paint();
-        mStrokePaint.setAntiAlias(true);
+        mStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mStrokePaint.setStyle(Paint.Style.STROKE);
         mStrokePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
         mStrokePaint.setStrokeWidth(STROKE_WIDTH * mDensity);
-        TypedArray ta = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.item_checkCircle_borderColor});
-        int defaultColor = ResourcesCompat.getColor(
-                getResources(), R.color.zhihu_item_checkCircle_borderColor,
-                getContext().getTheme());
-        int color = ta.getColor(0, defaultColor);
-        ta.recycle();
-        mStrokePaint.setColor(color);
+        mStrokePaint.setColor(Color.WHITE);
 
-        mCheckDrawable = ResourcesCompat.getDrawable(context.getResources(),
-                R.drawable.ic_check_white_18dp, context.getTheme());
+        mCheckDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_done).mutate();
+        mCheckDrawable.setTint(Color.WHITE);
     }
 
     public void setChecked(boolean checked) {
@@ -148,8 +142,8 @@ public class CheckView extends View {
                         BG_RADIUS * mDensity, mBackgroundPaint);
                 initTextPaint();
                 String text = String.valueOf(mCheckedNum);
-                int baseX = (int) (canvas.getWidth() - mTextPaint.measureText(text)) / 2;
-                int baseY = (int) (canvas.getHeight() - mTextPaint.descent() - mTextPaint.ascent()) / 2;
+                int baseX = (int) (getWidth() - mTextPaint.measureText(text)) / 2;
+                int baseY = (int) (getHeight() - mTextPaint.descent() - mTextPaint.ascent()) / 2;
                 canvas.drawText(text, baseX, baseY, mTextPaint);
             }
         } else {
@@ -180,11 +174,13 @@ public class CheckView extends View {
             float stop2 = outerRadius / gradientRadius;
             float stop3 = 1.0f;
             mShadowPaint.setShader(
-                    new RadialGradient((float) SIZE * mDensity / 2,
+                    new RadialGradient(
+                            (float) SIZE * mDensity / 2,
                             (float) SIZE * mDensity / 2,
                             gradientRadius * mDensity,
-                            new int[]{Color.parseColor("#00000000"), Color.parseColor("#0D000000"),
-                                    Color.parseColor("#0D000000"), Color.parseColor("#00000000")},
+                            new int[]{0x00000000, 0x22000000,
+                                    0x22000000, 0x00000000
+                            },
                             new float[]{stop0, stop1, stop2, stop3},
                             Shader.TileMode.CLAMP));
         }
@@ -192,15 +188,9 @@ public class CheckView extends View {
 
     private void initBackgroundPaint() {
         if (mBackgroundPaint == null) {
-            mBackgroundPaint = new Paint();
-            mBackgroundPaint.setAntiAlias(true);
-            mBackgroundPaint.setStyle(Paint.Style.FILL);
-            TypedArray ta = getContext().getTheme()
-                    .obtainStyledAttributes(new int[]{R.attr.item_checkCircle_backgroundColor});
-            int defaultColor = ResourcesCompat.getColor(
-                    getResources(), R.color.zhihu_item_checkCircle_backgroundColor,
-                    getContext().getTheme());
-            int color = ta.getColor(0, defaultColor);
+            mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            TypedArray ta = getContext().obtainStyledAttributes(new int[]{R.attr.colorAccent});
+            int color = ta.getColor(0, Color.MAGENTA);
             ta.recycle();
             mBackgroundPaint.setColor(color);
         }
@@ -208,8 +198,7 @@ public class CheckView extends View {
 
     private void initTextPaint() {
         if (mTextPaint == null) {
-            mTextPaint = new TextPaint();
-            mTextPaint.setAntiAlias(true);
+            mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
             mTextPaint.setColor(Color.WHITE);
             mTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             mTextPaint.setTextSize(12.0f * mDensity);

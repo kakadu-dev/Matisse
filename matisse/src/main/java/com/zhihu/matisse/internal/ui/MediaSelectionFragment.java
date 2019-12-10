@@ -16,15 +16,17 @@
 package com.zhihu.matisse.internal.ui;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
@@ -83,7 +85,24 @@ public class MediaSelectionFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        mRecyclerView = view.findViewById(R.id.recyclerview);
+        int gridSpacing = getResources().getDimensionPixelOffset(R.dimen.media_grid_spacing);
+        TypedArray ta = getActivity().obtainStyledAttributes(new int[]{R.attr.actionBarSize});
+        int toolbarHeight = ta.getDimensionPixelSize(0, 0);
+        ta.recycle();
+        mRecyclerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        mRecyclerView.setOnApplyWindowInsetsListener((v, insets) -> {
+            mRecyclerView.setPadding(
+                    insets.getSystemWindowInsetLeft(),
+                    insets.getSystemWindowInsetTop() + gridSpacing + toolbarHeight,
+                    insets.getSystemWindowInsetRight(),
+                    insets.getSystemWindowInsetBottom() + gridSpacing
+            );
+            return insets;
+        });
+        mRecyclerView.post(() -> mRecyclerView.requestApplyInsets());
     }
 
     @Override

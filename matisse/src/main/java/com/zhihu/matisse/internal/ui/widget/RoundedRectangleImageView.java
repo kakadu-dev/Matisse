@@ -19,9 +19,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.RectF;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
+@Deprecated
 public class RoundedRectangleImageView extends AppCompatImageView {
 
     private float mRadius; // dp

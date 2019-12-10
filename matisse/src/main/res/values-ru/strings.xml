@@ -27,10 +27,10 @@
 
     <string name="error_over_count_default">Вы выбрали максимальное количество файлов</string>
     <plurals name="error_over_count">
-        <item quantity="one">Можно выбрать не более %1$d файла</item>
-        <item quantity="few">Можно выбрать не более %1$d файлов</item>
-        <item quantity="many">Можно выбрать не более %1$d файлов</item>
-        <item quantity="other">Можно выбрать не более %1$d файлов</item>
+        <item quantity="one">Можно выбрать не более %d файла</item>
+        <item quantity="few">Можно выбрать не более %d файлов</item>
+        <item quantity="many">Можно выбрать не более %d файлов</item>
+        <item quantity="other">Можно выбрать не более %d файлов</item>
     </plurals>
     <string name="error_under_quality">Слишком низкое качество</string>
     <string name="error_over_quality">Слишком высокое качество</string>

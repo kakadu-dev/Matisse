@@ -16,7 +16,6 @@
 package com.zhihu.matisse.internal.model;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -167,27 +166,31 @@ public class SelectedItemCollection {
     }
 
     public IncapableCause isAcceptable(Item item) {
+        SelectionSpec spec = SelectionSpec.getInstance();
+        if (spec.maxSelectable == 1) {
+            IncapableCause isAcceptable = PhotoMetadataUtils.isAcceptable(mContext, item);
+            if (isAcceptable == null) {
+                mItems.clear();
+                return null;
+            }
+        }
         if (maxSelectableReached()) {
             int maxSelectable = currentMaxSelectable();
             String cause;
-
-            try {
-                cause = mContext.getResources().getQuantityString(
-                        R.plurals.error_over_count,
-                        maxSelectable,
-                        maxSelectable
-                );
-            } catch (Resources.NotFoundException e) {
-                cause = mContext.getString(
-                        R.string.error_over_count,
-                        maxSelectable
-                );
-            } catch (NoClassDefFoundError e) {
-                cause = mContext.getString(
-                        R.string.error_over_count,
-                        maxSelectable
-                );
-            }
+            cause = mContext.getString(R.string.error_over_count_default);
+//            try {
+//                cause = mContext.getResources().getQuantityString(
+//                        R.plurals.error_over_count,
+//                        maxSelectable,
+//                        maxSelectable
+//                );
+//            } catch (Throwable e) {
+//                e.printStackTrace();
+//                cause = mContext.getString(
+//                        R.string.error_over_count,
+//                        maxSelectable
+//                );
+//            }
 
             return new IncapableCause(cause);
         } else if (typeConflict(item)) {

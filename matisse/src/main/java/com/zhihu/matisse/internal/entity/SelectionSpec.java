@@ -21,7 +21,6 @@ import android.content.pm.ActivityInfo;
 import androidx.annotation.StyleRes;
 
 import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.R;
 import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
@@ -37,6 +36,7 @@ public final class SelectionSpec {
     public boolean mediaTypeExclusive;
     public boolean showSingleMediaType;
     @StyleRes
+    @Deprecated
     public int themeId;
     public int orientation;
     public boolean countable;
@@ -74,9 +74,8 @@ public final class SelectionSpec {
     private void reset() {
         mimeTypeSet = null;
         mediaTypeExclusive = true;
-        showSingleMediaType = false;
-        themeId = R.style.Matisse_Zhihu;
-        orientation = 0;
+        showSingleMediaType = true;
+        orientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
         countable = false;
         maxSelectable = 1;
         maxImageSelectable = 0;
@@ -86,13 +85,14 @@ public final class SelectionSpec {
         captureStrategy = null;
         spanCount = 3;
         gridExpectedSize = 0;
-        thumbnailScale = 0.5f;
+        thumbnailScale = 1f;
         imageEngine = new GlideEngine();
         hasInited = true;
         originalable = false;
         autoHideToobar = false;
         originalMaxSize = Integer.MAX_VALUE;
         showPreview = true;
+        themeId = 0;
     }
 
     public boolean singleSelectionModeEnabled() {

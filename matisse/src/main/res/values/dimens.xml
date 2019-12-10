@@ -15,8 +15,7 @@
   limitations under the License.
   -->
 <resources>
-    <dimen name="media_grid_size">48dp</dimen>
+    <dimen name="album_image_size">48dp</dimen>
     <dimen name="media_grid_spacing">4dp</dimen>
-
-    <dimen name="album_item_height">72dp</dimen>
+    <dimen name="album_item_height">56dp</dimen>
 </resources>

@@ -16,6 +16,7 @@
 package com.zhihu.matisse.engine.impl;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
@@ -31,7 +32,9 @@ public class PicassoEngine implements ImageEngine {
 
     @Override
     public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
-        Picasso.with(context).load(uri).placeholder(placeholder)
+        Picasso.get().load(uri)
+                .placeholder(placeholder)
+                .config(Bitmap.Config.RGB_565)
                 .resize(resize, resize)
                 .centerCrop()
                 .into(imageView);
@@ -45,7 +48,11 @@ public class PicassoEngine implements ImageEngine {
 
     @Override
     public void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
-        Picasso.with(context).load(uri).resize(resizeX, resizeY).priority(Picasso.Priority.HIGH)
+        Picasso.get()
+                .load(uri)
+                .config(Bitmap.Config.RGB_565)
+                .resize(resizeX, resizeY)
+                .priority(Picasso.Priority.HIGH)
                 .centerInside().into(imageView);
     }
 

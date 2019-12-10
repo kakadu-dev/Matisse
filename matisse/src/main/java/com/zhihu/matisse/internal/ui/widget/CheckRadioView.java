@@ -1,11 +1,12 @@
 package com.zhihu.matisse.internal.ui.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.zhihu.matisse.R;
 
@@ -22,19 +23,21 @@ public class CheckRadioView extends AppCompatImageView {
     }
 
 
-
     public CheckRadioView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
     private void init() {
-        mSelectedColor = ResourcesCompat.getColor(
-                getResources(), R.color.zhihu_item_checkCircle_backgroundColor,
-                getContext().getTheme());
-        mUnSelectUdColor = ResourcesCompat.getColor(
-                getResources(), R.color.zhihu_check_original_radio_disable,
-                getContext().getTheme());
+        mSelectedColor = Color.MAGENTA;
+        mUnSelectUdColor = Color.GRAY;
+        //FIXME
+//        mSelectedColor = ResourcesCompat.getColor(
+//                getResources(), R.color.zhihu_item_checkCircle_backgroundColor,
+//                getContext().getTheme());
+//        mUnSelectUdColor = ResourcesCompat.getColor(
+//                getResources(), R.color.zhihu_check_original_radio_disable,
+//                getContext().getTheme());
         setChecked(false);
     }
 

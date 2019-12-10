@@ -18,16 +18,17 @@ package com.zhihu.matisse.internal.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.viewpager.widget.ViewPager;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.IncapableCause;
@@ -39,7 +40,6 @@ import com.zhihu.matisse.internal.ui.widget.CheckRadioView;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.ui.widget.IncapableDialog;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
-import com.zhihu.matisse.internal.utils.Platform;
 import com.zhihu.matisse.listener.OnFragmentInteractionListener;
 
 public abstract class BasePreviewActivity extends AppCompatActivity implements View.OnClickListener,
@@ -69,24 +69,26 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     protected boolean mOriginalEnable;
 
     private FrameLayout mBottomToolbar;
-    private FrameLayout mTopToolbar;
+    private View mTopToolbar;
     private boolean mIsToolbarHide = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(SelectionSpec.getInstance().themeId);
         super.onCreate(savedInstanceState);
         if (!SelectionSpec.getInstance().hasInited) {
             setResult(RESULT_CANCELED);
             finish();
             return;
         }
-        setContentView(R.layout.activity_media_preview);
-        if (Platform.hasKitKat()) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-
         mSpec = SelectionSpec.getInstance();
+        if (mSpec.themeId != 0) {
+            setTheme(mSpec.themeId);
+        }
+        setContentView(R.layout.activity_media_preview);
+        setSupportActionBar(findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        applyWindowInsets();
+
         if (mSpec.needOrientationRestriction()) {
             setRequestedOrientation(mSpec.orientation);
         }
@@ -177,6 +179,34 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    private void applyWindowInsets() {
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            getWindow().setNavigationBarDividerColor(Color.TRANSPARENT);
+        }
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        View root = findViewById(R.id.root);
+        View toolbar = findViewById(R.id.top_toolbar);
+        root.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        root.setOnApplyWindowInsetsListener((v, insets) -> {
+            toolbar.setPadding(
+                    insets.getSystemWindowInsetLeft(),
+                    insets.getSystemWindowInsetTop(),
+                    insets.getSystemWindowInsetRight(),
+                    0
+            );
+            return insets;
+        });
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         mSelectedCollection.onSaveInstanceState(outState);
         outState.putBoolean("checkState", mOriginalEnable);
@@ -258,6 +288,9 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
                     mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached());
                 }
             }
+            if (mSpec.maxSelectable == 1) {
+                mCheckView.setEnabled(true);
+            }
             updateSize(item);
         }
         mPreviousPos = position;
@@ -270,15 +303,15 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
     private void updateApplyButton() {
         int selectedCount = mSelectedCollection.count();
+        int max = mSpec.maxSelectable;
         if (selectedCount == 0) {
-            mButtonApply.setText(R.string.button_apply_default);
-            mButtonApply.setEnabled(false);
-        } else if (selectedCount == 1 && mSpec.singleSelectionModeEnabled()) {
-            mButtonApply.setText(R.string.button_apply_default);
-            mButtonApply.setEnabled(true);
+            mButtonApply.setVisibility(View.GONE);
+        } else if (mSpec.singleSelectionModeEnabled() || max == 1) {
+            mButtonApply.setText(null);
+            mButtonApply.setVisibility(View.VISIBLE);
         } else {
-            mButtonApply.setEnabled(true);
-            mButtonApply.setText(getString(R.string.button_apply, selectedCount));
+            mButtonApply.setText(String.format("%d/%d", selectedCount, max));
+            mButtonApply.setVisibility(View.VISIBLE);
         }
 
         if (mSpec.originalable) {

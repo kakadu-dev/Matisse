@@ -33,10 +33,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginRight="@dimen/item_margin_horizontal"
             android:minHeight="56dp"
-            android:text="Zhihu"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:theme="@style/ZhihuOverlay" />
+            android:text="LightTheme"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/dracula"
@@ -46,10 +44,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="@dimen/item_margin_horizontal"
             android:minHeight="56dp"
-            android:text="Dracula"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:theme="@style/DraculaOverlay" />
+            android:text="DarkTheme"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/only_gif"
@@ -58,12 +54,21 @@
             android:layout_marginLeft="@dimen/item_margin_horizontal"
             android:layout_marginTop="16dp"
             android:layout_marginRight="@dimen/item_margin_horizontal"
-            android:layout_marginBottom="32dp"
             android:minHeight="56dp"
             android:text="OnlyGif"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:theme="@style/ZhihuOverlay" />
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/single"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/item_margin_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="@dimen/item_margin_horizontal"
+            android:layout_marginBottom="32dp"
+            android:minHeight="56dp"
+            android:text="Single"
+            android:textAllCaps="false" />
 
         <TextView
             android:layout_width="match_parent"

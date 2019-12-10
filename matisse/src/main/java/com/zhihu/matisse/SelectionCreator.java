@@ -19,6 +19,7 @@ package com.zhihu.matisse;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -125,6 +126,7 @@ public final class SelectionCreator {
      * @param themeId theme resource id. Default value is com.zhihu.matisse.R.style.Matisse_Zhihu.
      * @return {@link SelectionCreator} for fluent API.
      */
+    @Deprecated
     public SelectionCreator theme(@StyleRes int themeId) {
         mSelectionSpec.themeId = themeId;
         return this;

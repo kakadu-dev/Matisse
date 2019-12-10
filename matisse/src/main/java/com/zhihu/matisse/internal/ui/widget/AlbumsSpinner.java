@@ -16,16 +16,15 @@
 package com.zhihu.matisse.internal.ui.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.ListPopupWindow;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.ListPopupWindow;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
@@ -33,7 +32,7 @@ import com.zhihu.matisse.internal.utils.Platform;
 
 public class AlbumsSpinner {
 
-    private static final int MAX_SHOWN_COUNT = 6;
+    //    private static final int MAX_SHOWN_COUNT = 6;
     private CursorAdapter mAdapter;
     private TextView mSelected;
     private ListPopupWindow mListPopupWindow;
@@ -44,6 +43,7 @@ public class AlbumsSpinner {
         mListPopupWindow.setModal(true);
         float density = context.getResources().getDisplayMetrics().density;
         mListPopupWindow.setContentWidth((int) (216 * density));
+        mListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mListPopupWindow.setHorizontalOffset((int) (16 * density));
         mListPopupWindow.setVerticalOffset((int) (-48 * density));
 
@@ -99,23 +99,23 @@ public class AlbumsSpinner {
     public void setSelectedTextView(TextView textView) {
         mSelected = textView;
         // tint dropdown arrow icon
-        Drawable[] drawables = mSelected.getCompoundDrawables();
-        Drawable right = drawables[2];
-        TypedArray ta = mSelected.getContext().getTheme().obtainStyledAttributes(
-                new int[]{R.attr.album_element_color});
-        int color = ta.getColor(0, 0);
-        ta.recycle();
-        right.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+//        Drawable[] drawables = mSelected.getCompoundDrawables();
+//        Drawable right = drawables[2];
+//        TypedArray ta = mSelected.getContext().getTheme().obtainStyledAttributes(
+//                new int[]{R.attr.album_element_color});
+//        int color = ta.getColor(0, 0);
+//        ta.recycle();
+//        right.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
         mSelected.setVisibility(View.GONE);
         mSelected.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                int itemHeight = v.getResources().getDimensionPixelSize(R.dimen.album_item_height);
-                mListPopupWindow.setHeight(
-                        mAdapter.getCount() > MAX_SHOWN_COUNT ? itemHeight * MAX_SHOWN_COUNT
-                                : itemHeight * mAdapter.getCount());
+//                int itemHeight = v.getResources().getDimensionPixelSize(R.dimen.album_item_height);
+//                mListPopupWindow.setHeight(
+//                        mAdapter.getCount() > MAX_SHOWN_COUNT ? itemHeight * MAX_SHOWN_COUNT
+//                                : itemHeight * mAdapter.getCount());
                 mListPopupWindow.show();
             }
         });
