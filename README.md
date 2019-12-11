@@ -1,5 +1,5 @@
 # Matisse
-[![Release](https://jitpack.io/v/kakadu-dev/android-sociallogin.svg)](https://jitpack.io/#kakadu-dev/matisse)
+[![Release](https://jitpack.io/v/kakadu-dev/matisse.svg)](https://jitpack.io/#kakadu-dev/matisse)
 
 ## Warning!
 This fork changes minSdkVersion to 21
