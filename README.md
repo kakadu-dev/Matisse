@@ -1,7 +1,8 @@
-![Image](/image/banner.png)
-
 # Matisse
-[![Build Status](https://travis-ci.org/zhihu/Matisse.svg)](https://travis-ci.org/zhihu/Matisse) [ ![Download](https://api.bintray.com/packages/zhihu/maven/matisse/images/download.svg) ](https://bintray.com/zhihu/maven/matisse/_latestVersion)
+[![Release](https://jitpack.io/v/kakadu-dev/android-sociallogin.svg)](https://jitpack.io/#kakadu-dev/matisse)
+
+## Warning!
+This fork changes minSdkVersion to 21
 
 Matisse is a well-designed local image and video selector for Android. You can  
 - Use it in Activity or Fragment
@@ -11,20 +12,20 @@ Matisse is a well-designed local image and video selector for Android. You can
 - Define custom filter rules
 - More to find out yourself
 
-| Zhihu Style                    | Dracula Style                     | Preview                          |
-|:------------------------------:|:---------------------------------:|:--------------------------------:|
-|![](image/screenshot_zhihu.png) | ![](image/screenshot_dracula.png) | ![](image/screenshot_preview.png)|
+|![](image/screenshot_l1.webp)   |![](image/screenshot_l2.webp)   |![](image/screenshot_l3.webp)   |
+|:------------------------------:|:------------------------------:|:------------------------------:|
+|![](image/screenshot_d1.webp)   |![](image/screenshot_d2.webp )  |![](image/screenshot_d3.webp)   |
 
 ## Download
 Gradle:
 
 ```groovy
 repositories {
-    jcenter()
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
-    implementation 'com.zhihu.android:matisse:$latest_version'
+    implementation 'com.github.kakadu-dev:matisse:1.0.1'
 }
 ```
 
@@ -72,8 +73,8 @@ Matisse.from(MainActivity.this)
  
 #### Themes
 There are two built-in themes you can use to start `MatisseActivity`:
-- `R.style.Matisse_Zhihu` (light mode)
-- `R.style.Matisse_Dracula` (dark mode)  
+- `R.style.MatisseLightTheme` (light mode)
+- `R.style.MatisseDarkTheme` (dark mode)
 
 And Also you can define your own theme as you wish.
 
