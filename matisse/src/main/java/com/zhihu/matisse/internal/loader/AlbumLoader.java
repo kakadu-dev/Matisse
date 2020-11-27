@@ -60,7 +60,9 @@ public class AlbumLoader extends CursorLoader {
             COLUMN_BUCKET_ID,
             COLUMN_BUCKET_DISPLAY_NAME,
             MediaStore.MediaColumns.MIME_TYPE,
-            "COUNT(*) AS " + COLUMN_COUNT};
+            "COUNT(*) AS " + COLUMN_COUNT,
+            "MAX(" + MediaStore.MediaColumns.DATE_MODIFIED + ")"//fix sort before GROUP
+    };
 
     private static final String[] PROJECTION_29 = {
             MediaStore.Files.FileColumns._ID,
@@ -116,7 +118,7 @@ public class AlbumLoader extends CursorLoader {
     }
     // =============================================
 
-    private static final String BUCKET_ORDER_BY = "datetaken DESC";
+    private static final String BUCKET_ORDER_BY = AlbumMediaLoader.ORDER_BY;
 
     private AlbumLoader(Context context, String selection, String[] selectionArgs) {
         super(

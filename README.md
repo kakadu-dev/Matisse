@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.kakadu-dev:matisse:1.0.1'
+    implementation 'com.github.kakadu-dev:matisse:1.0.2'
 }
 ```
 
