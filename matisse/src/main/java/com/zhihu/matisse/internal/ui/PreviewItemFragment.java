@@ -18,19 +18,19 @@ package com.zhihu.matisse.internal.ui;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 import com.zhihu.matisse.listener.OnFragmentInteractionListener;
 
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
@@ -93,12 +93,14 @@ public class PreviewItemFragment extends Fragment {
             }
         });
 
-        Point size = PhotoMetadataUtils.getBitmapSize(item.getContentUri(), getActivity());
+//        Point size = PhotoMetadataUtils.getBitmapSize(item.getContentUri(), getActivity());
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int maxSize = Math.max(dm.widthPixels, dm.heightPixels);
         if (item.isGif()) {
-            SelectionSpec.getInstance().imageEngine.loadGifImage(getContext(), size.x, size.y, image,
+            SelectionSpec.getInstance().imageEngine.loadGifImage(getContext(), maxSize, maxSize, image,
                     item.getContentUri());
         } else {
-            SelectionSpec.getInstance().imageEngine.loadImage(getContext(), size.x, size.y, image,
+            SelectionSpec.getInstance().imageEngine.loadImage(getContext(), maxSize, maxSize, image,
                     item.getContentUri());
         }
     }

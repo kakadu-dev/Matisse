@@ -53,7 +53,9 @@ public class PicassoEngine implements ImageEngine {
                 .config(Bitmap.Config.RGB_565)
                 .resize(resizeX, resizeY)
                 .priority(Picasso.Priority.HIGH)
-                .centerInside().into(imageView);
+                .centerInside()
+                .onlyScaleDown()
+                .into(imageView);
     }
 
     @Override
